@@ -1,0 +1,15 @@
+id: gnsssdr_mod_de_serializer
+label: de serializer
+category: '[Gnsssdr_mod]'
+templates:
+  imports: import gnsssdr_mod
+  make: gnsssdr_mod.de_serializer(${port})
+parameters:
+- id: port
+  label: Port
+  dtype: raw
+outputs:
+- label: out
+  domain: stream
+  dtype: complex
+file_format: 1
