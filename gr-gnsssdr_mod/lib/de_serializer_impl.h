@@ -21,10 +21,9 @@
 #ifndef INCLUDED_GNSSSDR_MOD_DE_SERIALIZER_IMPL_H
 #define INCLUDED_GNSSSDR_MOD_DE_SERIALIZER_IMPL_H
 
-#include <gnsssdr_mod/de_serializer.h>
-
 #include "gnss_synchro.pb.h"
 #include "gnss_synchro_udp_source.h"
+#include <gnsssdr_mod/de_serializer.h>
 
 namespace gr {
 namespace gnsssdr_mod {

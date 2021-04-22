@@ -23,9 +23,7 @@
 #endif
 
 #include "de_serializer_impl.h"
-
 #include <gnuradio/io_signature.h>
-#include <ncurses.h>
 
 namespace gr {
 namespace gnsssdr_mod {
@@ -57,6 +55,9 @@ de_serializer_impl::~de_serializer_impl() {}
 bool de_serializer_impl::start()
 {
     gnss_sync_src_sptr = std::make_shared<Gnss_Synchro_Udp_Source>(b_port);
+    std::cout << std::setw(3) << "CH" << std::setw(6) << "PRN" << std::setw(14)
+              << "CN0 [dB-Hz]" << std::setw(17) << "Doppler [Hz]\n"
+              << '\n';
     return true;
 }
 
@@ -65,22 +66,19 @@ int de_serializer_impl::work(int noutput_items,
                              gr_vector_void_star& output_items)
 {
     gr_complex* out = (gr_complex*)output_items[0];
-
     gnss_sdr::Observables stocks;
     bool success = gnss_sync_src_sptr->read_gnss_synchro(stocks);
     if (success) {
-        print_table(stocks);
+        print_table(stocks); // TODO REPLACE BY ACTUAL PASSING OUT TO NEXT BLOCK
         // populate_channels(stocks);
         // print_table(stocks, )
-    } else {
-        return 0;
     }
     // Do <+signal processing+>
 
     // Tell runtime system how many output items we produced.
 
     // we return varying number of data -> call produce & return flag
-    // produce(0, items_retrieved);
+    produce(0, 0);
     return this->WORK_CALLED_PRODUCE;
 }
 
@@ -102,25 +100,15 @@ void de_serializer_impl::print_table(gnss_sdr::Observables& stocks)
     std::map<int, gnss_sdr::GnssSynchro> channels;
     populate_channels(stocks, channels);
 
-    clear(); // Clear the screen.
-
-    // Print table header.
-    attron(A_REVERSE);
-    printw("%3s%6s%14s%17s\n", "CH", "PRN", "CN0 [dB-Hz]", "Doppler [Hz]");
-    attroff(A_REVERSE);
-
     // Print table contents.
     for (auto const& ch : channels) {
         int channel_id = ch.first;              // Key
         gnss_sdr::GnssSynchro data = ch.second; // Value
 
-        printw("%3d%6d%14f%17f\n",
-               channel_id,
-               data.prn(),
-               data.cn0_db_hz(),
-               data.carrier_doppler_hz());
+        std::cout << std::setw(3) << channel_id << std::setw(6) << data.prn()
+                  << std::setw(14) << data.cn0_db_hz() << std::setw(17)
+                  << data.carrier_doppler_hz() << '\n';
     }
-    refresh(); // Update the screen.
 }
 
 

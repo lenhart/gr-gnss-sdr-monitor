@@ -34,7 +34,7 @@ include(GrPlatform) #define LIB_SUFFIX
 	     message(FATAL_ERROR "Fatal error: Protocol Buffers > v3.0.0 required.")
 	endif()
 
-	include_directories(${CMAKE_CURRENT_BINARY_DIR}) 		#OR set(CMAKE_INCLUDE_CURRENT_DIR ON)
+	include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 	protobuf_generate_cpp(PROTO_SRCS_SYNC PROTO_HDRS_SYNC gnss_synchro.proto)
 
@@ -53,18 +53,11 @@ if(NOT gnsssdr_mod_sources)
     return()
 endif(NOT gnsssdr_mod_sources)
 
-set(CURSES_NEED_NCURSES TRUE)
-find_package(Curses REQUIRED)
-if(NOT CURSES_FOUND)
-     message(FATAL_ERROR "Fatal error: NCurses required.")
-endif()
-
 add_library(gnuradio-gnsssdr_mod SHARED ${gnsssdr_mod_sources})
-target_link_libraries(gnuradio-gnsssdr_mod PUBLIC gnuradio::gnuradio-runtime Boost::boost protobuf::libprotobuf ${CURSES_LIBRARIES})
+target_link_libraries(gnuradio-gnsssdr_mod PUBLIC gnuradio::gnuradio-runtime Boost::boost protobuf::libprotobuf)
 target_include_directories(gnuradio-gnsssdr_mod
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
     PUBLIC $<INSTALL_INTERFACE:include>
-    PRIVATE ${CURSES_INCLUDE_DIRS}
   )
 set_target_properties(gnuradio-gnsssdr_mod PROPERTIES DEFINE_SYMBOL "gnuradio_gnsssdr_mod_EXPORTS")
 
