@@ -23,7 +23,6 @@
 #endif
 
 #include "de_serializer_impl.h"
-#include "gnss_synchro.pb.h"
 
 #include <gnuradio/io_signature.h>
 #include <ncurses.h>
