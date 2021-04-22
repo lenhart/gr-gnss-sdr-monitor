@@ -23,6 +23,7 @@
 
 #include <gnsssdr_mod/de_serializer.h>
 
+#include "gnss_synchro.pb.h"
 #include "gnss_synchro_udp_source.h"
 
 namespace gr {
