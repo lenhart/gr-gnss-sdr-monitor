@@ -23,5 +23,7 @@
 ########################################################################
 install(FILES
     api.h
-    de_serializer.h DESTINATION include/gnsssdr_mod
+    de_serializer.h
+    signal_generator.h
+    DESTINATION include/gnsssdr_mod
 )

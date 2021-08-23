@@ -37,15 +37,17 @@ include(GrPlatform) #define LIB_SUFFIX
 	include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 	protobuf_generate_cpp(PROTO_SRCS_SYNC PROTO_HDRS_SYNC gnss_synchro.proto)
+	protobuf_generate_cpp(PROTO_SRCS_PVT PROTO_HDRS_SYNC monitor_pvt.proto)
 
 ## continuing
-
-
 list(APPEND gnsssdr_mod_sources
     de_serializer_impl.cc
     gnss_synchro_udp_source.cc
+    gnss_pvt_udp_source.cc
     ${PROTO_SRCS_SYNC}
-)
+    ${PROTO_SRCS_PVT}
+    signal_generator_impl.cc
+    )
 
 set(gnsssdr_mod_sources "${gnsssdr_mod_sources}" PARENT_SCOPE)
 if(NOT gnsssdr_mod_sources)
@@ -54,7 +56,13 @@ if(NOT gnsssdr_mod_sources)
 endif(NOT gnsssdr_mod_sources)
 
 add_library(gnuradio-gnsssdr_mod SHARED ${gnsssdr_mod_sources})
-target_link_libraries(gnuradio-gnsssdr_mod PUBLIC gnuradio::gnuradio-runtime Boost::boost protobuf::libprotobuf)
+target_link_libraries(gnuradio-gnsssdr_mod PUBLIC 
+	gnuradio::gnuradio-runtime 
+	Boost::boost 
+	protobuf::libprotobuf
+	gnuradio::gnuradio-pmt
+)
+	
 target_include_directories(gnuradio-gnsssdr_mod
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
     PUBLIC $<INSTALL_INTERFACE:include>

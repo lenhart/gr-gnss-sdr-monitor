@@ -1,0 +1,18 @@
+id: gnsssdr_mod_signal_generator
+label: signal generator
+category: '[Gnsssdr_mod]'
+templates:
+  imports: |-
+     import gnsssdr_mod
+     import pmt
+  make: gnsssdr_mod.signal_generator()
+
+inputs:
+-   domain: message
+    id: msg
+    
+outputs:
+- label: out
+  domain: stream
+  dtype: short
+file_format: 1

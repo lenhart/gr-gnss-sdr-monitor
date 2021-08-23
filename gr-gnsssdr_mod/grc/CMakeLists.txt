@@ -17,7 +17,8 @@
 # along with GNU Radio; see the file COPYING.  If not, write to
 # the Free Software Foundation, Inc., 51 Franklin Street,
 # Boston, MA 02110-1301, USA.
-
 install(FILES
-    gnsssdr_mod_de_serializer.block.yml DESTINATION share/gnuradio/grc/blocks
+    gnsssdr_mod_de_serializer.block.yml
+    gnsssdr_mod_signal_generator.block.yml
+    DESTINATION share/gnuradio/grc/blocks
 )

@@ -40,3 +40,7 @@ double pdop = 26;  // Position (3D) Dilution of Precision
 double hdop = 27;  // Horizontal Dilution of Precision
 double vdop = 28;  // Vertical Dilution of Precision
 }
+
+message PvtMonitorMsgs {
+	repeated MonitorPvt PvtMonitorMsg = 1;
+}

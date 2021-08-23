@@ -21,35 +21,34 @@
 #ifndef INCLUDED_GNSSSDR_MOD_DE_SERIALIZER_H
 #define INCLUDED_GNSSSDR_MOD_DE_SERIALIZER_H
 
-#include <gnsssdr_mod/api.h>
 #include <gnuradio/sync_block.h>
+#include <gnsssdr_mod/api.h>
 
 namespace gr {
-  namespace gnsssdr_mod {
+namespace gnsssdr_mod {
+
+/*!
+ * \brief <+description of block+>
+ * \ingroup gnsssdr_mod
+ *
+ */
+class GNSSSDR_MOD_API de_serializer : virtual public gr::block
+{
+public:
+    typedef boost::shared_ptr<de_serializer> sptr;
 
     /*!
-     * \brief <+description of block+>
-     * \ingroup gnsssdr_mod
+     * \brief Return a shared_ptr to a new instance of gnsssdr_mod::de_serializer.
      *
+     * To avoid accidental use of raw pointers, gnsssdr_mod::de_serializer's
+     * constructor is in a private implementation
+     * class. gnsssdr_mod::de_serializer::make is the public interface for
+     * creating new instances.
      */
-    class GNSSSDR_MOD_API de_serializer : virtual public gr::sync_block
-    {
-     public:
-      typedef boost::shared_ptr<de_serializer> sptr;
+    static sptr make(uint16_t monitor_port, uint16_t pvt_monitor);
+};
 
-      /*!
-       * \brief Return a shared_ptr to a new instance of gnsssdr_mod::de_serializer.
-       *
-       * To avoid accidental use of raw pointers, gnsssdr_mod::de_serializer's
-       * constructor is in a private implementation
-       * class. gnsssdr_mod::de_serializer::make is the public interface for
-       * creating new instances.
-       */
-      static sptr make(uint16_t port);
-    };
-
-  } // namespace gnsssdr_mod
+} // namespace gnsssdr_mod
 } // namespace gr
 
 #endif /* INCLUDED_GNSSSDR_MOD_DE_SERIALIZER_H */
-

@@ -8,6 +8,12 @@ class Gnss_Synchro_Udp_Source
 {
 public:
     Gnss_Synchro_Udp_Source(uint16_t port);
+
+    // reads as many items as available, return number
+    //[[deprecated("function blocks too long and doesn't hand back to block..")]] int
+    //read_gnss_synchro(std::vector<gnss_sdr::Observables>& stocks);
+
+    // returns one stock item
     bool read_gnss_synchro(gnss_sdr::Observables& stocks);
 
 private:

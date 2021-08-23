@@ -21,34 +21,47 @@
 #ifndef INCLUDED_GNSSSDR_MOD_DE_SERIALIZER_IMPL_H
 #define INCLUDED_GNSSSDR_MOD_DE_SERIALIZER_IMPL_H
 
+#include <gnsssdr_mod/de_serializer.h> // TODO WHY DOES GNU RADIO INCLUDE IT LIKE THIS? THIS CONFUSES CLANG-FORMAT
+
+#include "gnss_pvt_udp_source.h"
 #include "gnss_synchro.pb.h"
 #include "gnss_synchro_udp_source.h"
-#include <gnsssdr_mod/de_serializer.h>
+#include "monitor_pvt.pb.h"
 
 namespace gr {
 namespace gnsssdr_mod {
 
+
+/**
+ * 1st attempt, does everything in one block, incl. reading both streams
+ */
 class de_serializer_impl : public de_serializer
 {
 private:
-    const uint16_t b_port;
+    const uint16_t b_port_monitor;
+    const uint16_t b_port_pvt;
 
     std::shared_ptr<Gnss_Synchro_Udp_Source> gnss_sync_src_sptr;
+    std::shared_ptr<Gnss_Pvt_Udp_Source> gnss_pvt_src_sptr;
 
-    void populate_channels(const gnss_sdr::Observables& stocks,
-                           std::map<int, gnss_sdr::GnssSynchro>& channels);
-    void print_table(gnss_sdr::Observables& stocks);
+    void process(const gnss_sdr::Observables& stocks, float* out);
+
+    void populate_monitor_channels(const gnss_sdr::Observables& stocks,
+                                   std::map<int, gnss_sdr::GnssSynchro>& channels);
+    void print_table(std::map<int, gnss_sdr::GnssSynchro>& channels);
+
+    void test_msg_passing(); // to test message passing to next block
+
+    std::thread d_thread;
+    gr::thread::mutex d_mutex;
+    bool d_finished{ false };
+    void run();
 
 public:
-    de_serializer_impl(uint16_t port);
+    de_serializer_impl(uint16_t port_monitor, uint16_t port_pvt);
     ~de_serializer_impl();
 
     bool start() override;
-
-    // Where all the action really happens
-    int work(int noutput_items,
-             gr_vector_const_void_star& input_items,
-             gr_vector_void_star& output_items);
 };
 
 } // namespace gnsssdr_mod

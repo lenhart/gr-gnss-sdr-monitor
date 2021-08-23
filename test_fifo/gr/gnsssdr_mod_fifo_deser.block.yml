@@ -1,0 +1,18 @@
+id: gnsssdr_mod_fifo_deser
+label: fifo deser
+category: '[Gnsssdr_mod]'
+templates:
+  imports: |-
+     import gnsssdr_mod
+     import pmt
+  make: gnsssdr_mod.fifo_deser(${fifo})
+parameters:
+- id: fifo
+  label: Fifo
+  dtype: string
+file_format: 1
+
+outputs:
+-   domain: message
+    id: out
+    optional: true

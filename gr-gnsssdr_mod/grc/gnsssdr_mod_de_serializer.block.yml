@@ -1,15 +1,24 @@
 id: gnsssdr_mod_de_serializer
-label: de serializer
+label: de-serializer
 category: '[Gnsssdr_mod]'
 templates:
-  imports: import gnsssdr_mod
-  make: gnsssdr_mod.de_serializer(${port})
+  imports: |-
+     import gnsssdr_mod
+     import pmt
+  make: gnsssdr_mod.de_serializer(${monitor_port}, ${pvt_monitor})
 parameters:
-- id: port
-  label: Port
+- id: monitor_port
+  label: Monitor_port
   dtype: raw
-outputs:
-- label: out
-  domain: stream
-  dtype: complex
+  default: '1234'
+- id: pvt_monitor
+  label: Pvt_monitor
+  dtype: raw
+  default: '1111'
+
 file_format: 1
+
+outputs:
+-   domain: message
+    id: out
+    optional: true
